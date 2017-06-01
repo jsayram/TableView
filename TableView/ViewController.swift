@@ -16,6 +16,7 @@ import UIKit
 
 1.) Getting tableView data into table view that repeats for each row for specied section
 2.) Getting tableView Data from an Array
+3.) How to Recycle or Reuse Table Views, in the case that you have a ton of data
  
 */
 class ViewController: UIViewController, UITableViewDataSource {
@@ -45,10 +46,11 @@ class ViewController: UIViewController, UITableViewDataSource {
            table view cells are the visual end of a tableview ie: icons , 
            and list, or switches, or custom UI objects etc.*/
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // so we want to return a UITableView Cell
-        let cell = UITableViewCell()
-      
+       
      /* 1.) Same data repeated
+         // so we want to return a UITableView Cell
+         let cell = UITableViewCell()
+        
         /*modifiy the label inside the cell
         --note this will provide this equal to number of rows in section, 
          hense this will show 5 times because the number of rows for this section
@@ -58,15 +60,32 @@ class ViewController: UIViewController, UITableViewDataSource {
      */
         
      /* 2.)And then when we're providing the cells we need to change the string to be whatever is
-         inside of that particular object in the array. So, index zero for the first cell and 
+         inside of that particular object in the array. 
+         /*So, index zero for the first cell and
          then one for the second and two for the third. Now to get that data, it's actually stored 
          inside this index path. If you put your cursor on index path and look at the quick health menu, 
-         and it says it represents the path to a specific note in a tree of nested array collections.
-     */
+         and it says it represents the path to a specific note in a tree of nested array collections.*/
+         // so we want to return a UITableView Cell
+         let cell = UITableViewCell()
+         
         //basically it will allow to get to a specific Row and section in our table View
         cell.textLabel?.text = data[indexPath.row]   //note: if you are using sections in table view then you need to make sure you are referencing the right section in your idextpath , but if you just have just one section indexPath.row is sufficient.
         return cell
+     */
         
+     /* 3.)IOS has a built in feature to recycle tableView Rows*/
+        /* so we want to return a UITableView Cell
+        --NOTE: what ever you call the string perameter you need to remember because you will use it later
+        this method dequeueResuableCell returns a reuable cell, and is great for optimization reasons*/
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = data[indexPath.row]
+        return cell
+        /*--So let's make the other change that we have to make by going to our storyboard.*/
+ 
+        /*Remember that we have this identifier "cell" here. We'll go to Main.storyboard, and then we're going to select the Table View and head over to the Attributes Inspector. Now the Attributes Inspector has several different settings for your table view, including how the data is organized, colors of cells, etc. So you can modify those here should you choose. To reuse the cells however, we're going to need to add a prototype cell. Make sure that in your Table View section you have Content set to Dynamic Prototypes.
+ 
+        In here you want to add a prototype cell by clicking the up arrow, so now I have this one Prototype Cell right here, and if you click on that cell then you're going to see this area inside of the Attributes Inspector. You should see that you have a Table View Cell selected. For the style, I'm going to leave Custom and for the Identifier, I'm going to type "cell", so this comes from the string that we set earlier in the dequeueResuableCell method, so if we change that "cell" string to something else, then you need to use that something else in your storyboard as well.*/
+ 
     }
 
     override func didReceiveMemoryWarning() {
