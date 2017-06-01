@@ -20,6 +20,9 @@ import UIKit
  4.) Using a multidimentinal array for organizing the tableView Rows into Sections
  5.) Addint tittles or headers for each section in the group.
  
+ 6.) Adding images and subtittles step1:select tableView Cell in interface builder, then head over to the attributes inspector.NOTE: Must have prototype cell set up first in order to be able to do this. so start from 3.). 
+     step2: change the default style in the attributes inpector from custom to substitute.when doing so you should get an image dropdown menu where you can select and image you want and you should also get a "Tittle subtittle" in prototype cell.
+
  */
 class ViewController: UIViewController, UITableViewDataSource {
     //2.) Declaring the array
@@ -29,8 +32,16 @@ class ViewController: UIViewController, UITableViewDataSource {
     let data:[[String]] = [["Item 1","Item 2","Item 3"],
                            ["Item A","Item B","Item C"]]
     
+    // 6.) this is to change the subtittle under the Title, so create an array for the subs, then after created. Go down to func tableView that contains the cellForRowAt indexPath
+    let subs:[[String]] = [["Sub 1","Sub 2","Sub 3"],
+                           ["Sub A","Sub B","Sub C"]]
+    
     //5.) string array for header
     let headers:[String] = ["Numbered","Lettered"]  //a string for each section in the data[]
+    
+    
+    
+    
     
     
     override func viewDidLoad() {
@@ -112,13 +123,24 @@ class ViewController: UIViewController, UITableViewDataSource {
          Because now we need the section and the row.*/
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = data[indexPath.section][indexPath.row]  //this gets section,then the row == the item in each array
-        return cell
         
-        /*Now go back to storyBoard to choose how the sections are presented, so in the storyboard select the table-view and then under style, in the attributes inspector, I'm going to change from plain to grouped. Now if we do that and we test the application, now the items are broken up into obvious groups, there we go. So we successfully grouped our table-views by handling number of sections in table-view and by using a multidimensional array.
+       // 6.) to set the subtittles, or subs[] : note to add image just go click and drag images to assets folder, and then add your images
+        cell.detailTextLabel?.text = subs[indexPath.section][indexPath.row]
+        
+        //6.) to have different images in each row
+        cell.imageView?.image = UIImage(named: "star")
+        
+       //always return 
+         return cell
+        
+        /*4.)Now go back to storyBoard to choose how the sections are presented, so in the storyboard select the table-view and then under style, in the attributes inspector, I'm going to change from plain to grouped. Now if we do that and we test the application, now the items are broken up into obvious groups, there we go. So we successfully grouped our table-views by handling number of sections in table-view and by using a multidimensional array.
          
          So now if we wanted to add another group, we just add another one of our arrays into this multidimensional array. We can also add additional items or remove items, they don't need to have the same amount. We can put all of our data in here and it will show up in the table-view properly. If you want to customize the appearance of the groups in your table-view, you can always modify the separator, settings, and you can modify the colors, you can do all of this through the attributes inspector.
          
          So by using this multidimensional array, we can make any modifications that we want and the data will show up properly and organized within the table-view.*/
+        
+       
+    
     }
     
     /* 5.) adding headers to the tableView for each of the section of rows, in order to use this
