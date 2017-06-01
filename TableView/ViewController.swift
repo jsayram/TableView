@@ -138,8 +138,6 @@ class ViewController: UIViewController, UITableViewDataSource {
          So now if we wanted to add another group, we just add another one of our arrays into this multidimensional array. We can also add additional items or remove items, they don't need to have the same amount. We can put all of our data in here and it will show up in the table-view properly. If you want to customize the appearance of the groups in your table-view, you can always modify the separator, settings, and you can modify the colors, you can do all of this through the attributes inspector.
          
          So by using this multidimensional array, we can make any modifications that we want and the data will show up properly and organized within the table-view.*/
-        
-       
     
     }
     
@@ -149,11 +147,6 @@ class ViewController: UIViewController, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return headers[section]  //this will add the appropriate headers for each section
     }
-    
-    
-    
-    
-    
     
     
     override func didReceiveMemoryWarning() {
