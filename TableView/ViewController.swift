@@ -17,12 +17,17 @@ import UIKit
 1.) Getting tableView data into table view that repeats for each row for specied section
 2.) Getting tableView Data from an Array
 3.) How to Recycle or Reuse Table Views, in the case that you have a ton of data
+4.) Using a multidimentinal array for organizing the tableView Rows into Sections
  
 */
 class ViewController: UIViewController, UITableViewDataSource {
      //2.) Declaring the array
-    let data:[String] = ["Item 1","Item 2","Item 3"]
+     //  let data:[String] = ["Item 1","Item 2","Item 3"]
     
+    // 4.) multimentinal array
+        let data:[[String]] = [["Item 1","Item 2","Item 3"],
+                               ["Item A","Item B","Item C"]]
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,12 +41,23 @@ class ViewController: UIViewController, UITableViewDataSource {
         return 5  // this sais that there are going to be 5 rows in the table view, but we still need to define what is goin to be in those 5 rows.
      */
         
-     /* 2.) Modify the number of rows based on the array declared, in this case we are going to return the count of the array data[] 
-     */
+     /* 2.)& 3.) Modify the number of rows based on the array declared, in this case we are going to return the count of the array data[]
+     
         return data.count  // this will return the count of the array,
-   
+     */
+        
+     /*4.) you need to use number of rows in the current sections. not just the number of sections*/
+        return data[section].count  //handle the number of sections in tableView func below
     }
     
+    /*4.)this fuction handles the number of sections, that will give TWO because the
+        mulidimentinal array has to sections. Item1, items 2, items 3 and items A,itemsB,ItemsC*/
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return data.count
+    }
+    
+    
+
        /*Step 2: define what is goin to be in those rows in step1 , 
            table view cells are the visual end of a tableview ie: icons , 
            and list, or switches, or custom UI objects etc.*/
@@ -73,7 +89,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         return cell
      */
         
-     /* 3.)IOS has a built in feature to recycle tableView Rows*/
+     /* 3.)IOS has a built in feature to recycle tableView Rows
         /* so we want to return a UITableView Cell
         --NOTE: what ever you call the string perameter you need to remember because you will use it later
         this method dequeueResuableCell returns a reuable cell, and is great for optimization reasons*/
@@ -85,7 +101,22 @@ class ViewController: UIViewController, UITableViewDataSource {
         /*Remember that we have this identifier "cell" here. We'll go to Main.storyboard, and then we're going to select the Table View and head over to the Attributes Inspector. Now the Attributes Inspector has several different settings for your table view, including how the data is organized, colors of cells, etc. So you can modify those here should you choose. To reuse the cells however, we're going to need to add a prototype cell. Make sure that in your Table View section you have Content set to Dynamic Prototypes.
  
         In here you want to add a prototype cell by clicking the up arrow, so now I have this one Prototype Cell right here, and if you click on that cell then you're going to see this area inside of the Attributes Inspector. You should see that you have a Table View Cell selected. For the style, I'm going to leave Custom and for the Identifier, I'm going to type "cell", so this comes from the string that we set earlier in the dequeueResuableCell method, so if we change that "cell" string to something else, then you need to use that something else in your storyboard as well.*/
+     */
+        
+        
+    /* 4.) we need to modify table-view cell for row at index path. 
+            Because now we need the section and the row.*/
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = data[indexPath.section][indexPath.row]  //this gets section,then the row == the item in each array
+        return cell
+        
+    /*Now go back to storyBoard to choose how the sections are presented, so in the storyboard select the table-view and then under style, in the attributes inspector, I'm going to change from plain to grouped. Now if we do that and we test the application, now the items are broken up into obvious groups, there we go. So we successfully grouped our table-views by handling number of sections in table-view and by using a multidimensional array.
  
+    So now if we wanted to add another group, we just add another one of our arrays into this multidimensional array. We can also add additional items or remove items, they don't need to have the same amount. We can put all of our data in here and it will show up in the table-view properly. If you want to customize the appearance of the groups in your table-view, you can always modify the separator, settings, and you can modify the colors, you can do all of this through the attributes inspector.
+ 
+    So by using this multidimensional array, we can make any modifications that we want and the data will show up properly and organized within the table-view.*/
+ 
+        
     }
 
     override func didReceiveMemoryWarning() {
